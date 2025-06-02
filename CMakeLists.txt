@@ -17,6 +17,7 @@ include_directories(include)
 set(SOURCES
     src/main.cpp
     src/simulation.cpp
+    src/graphics_manager.cpp
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

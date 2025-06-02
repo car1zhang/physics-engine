@@ -1,10 +1,8 @@
 #include "simulation.h"
-#include <GLFW/glfw3.h>
 
-int main()
-{
+int main() {
     Simulation* simulation = new Simulation();
-    simulation->run_loop();
+    simulation->RunLoop();
 
     return 0;
 }

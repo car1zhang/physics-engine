@@ -1,23 +1,19 @@
 #pragma once
 #include <GLFW/glfw3.h>
+#include "graphics_manager.h"
 
-class Simulation
-{
-    public:
-        Simulation();
-        ~Simulation();
-        void run_loop();
+class Simulation {
+public:
+    Simulation();
+    ~Simulation();
+    void RunLoop();
 
-        GLFWwindow* get_window() { return window; }
+private:
+    void ProcessInput_();
+    void UpdateState_(double delta_time);
+    void RenderOutput_();
 
-    private:
-        void process_input();
-        void update_state(double delta_time);
-        void render_output();
+    GraphicsManager* graphics_manager_;
 
-        unsigned int shader_program, vao, vbo, ebo;
-
-        GLFWwindow* window;
-
-        bool is_running;
+    bool is_running_;
 };
