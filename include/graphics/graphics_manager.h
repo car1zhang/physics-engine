@@ -1,4 +1,5 @@
 #pragma once
+#include "graphics/shader.h"
 #include <GLFW/glfw3.h>
 #include <string>
 
@@ -18,7 +19,7 @@ private:
 
     GLFWwindow* window_;
 
-    GLuint shader_program_;
-    GLuint shader_program_1;
-    GLuint vaos_[2], vbos_[2], ebo_;
+    Shader* shader_;
+
+    GLuint vbo_, vao_;
 };

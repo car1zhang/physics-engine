@@ -17,7 +17,8 @@ include_directories(include)
 set(SOURCES
     src/main.cc
     src/simulation.cc
-    src/graphics_manager.cc
+    src/graphics/graphics_manager.cc
+    src/graphics/shader.cc
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

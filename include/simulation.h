@@ -1,6 +1,6 @@
 #pragma once
+#include "graphics/graphics_manager.h"
 #include <GLFW/glfw3.h>
-#include "graphics_manager.h"
 
 class Simulation {
 public:
