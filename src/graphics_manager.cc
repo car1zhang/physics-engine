@@ -10,34 +10,6 @@
 GraphicsManager::GraphicsManager() {
     CreateWindow_();
     InitializeShaders_();
-
-    // things to draw
-    float ndc_vertices[] = {
-        -0.5f, 0.5f, 0.0f,
-        -0.8f, -0.5f, 0.0f,
-        -0.2f, -0.5f, 0.0f,
-        0.5f, 0.5f, 0.0f,
-        0.2f, -0.5f, 0.0f,
-        0.8f, -0.5f, 0.0f
-    };
-    unsigned int indices[] = {
-        0, 1, 2,
-        3, 4, 5
-    };
-    glGenVertexArrays(1, &vao_);
-    glGenBuffers(1, &vbo_);
-    glGenBuffers(1, &ebo_);
-
-    glBindVertexArray(vao_);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(ndc_vertices), ndc_vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 }
 
 GraphicsManager::~GraphicsManager() {
@@ -49,8 +21,7 @@ void GraphicsManager::Draw() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(shader_program_);
-    glBindVertexArray(vao_);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window_);
 }
@@ -80,7 +51,7 @@ void GraphicsManager::CreateWindow_() {
     glViewport(0, 0, width, height);
 }
 
-unsigned int GraphicsManager::LoadShader_(const std::string& filepath, GLenum shader_type) {
+GLuint GraphicsManager::LoadShader_(const std::string& filepath, GLenum shader_type) {
     std::ifstream shader_file;
     std::stringstream shader_stream;
     shader_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -111,8 +82,9 @@ unsigned int GraphicsManager::LoadShader_(const std::string& filepath, GLenum sh
 }
 
 void GraphicsManager::InitializeShaders_() {
-    unsigned int vertex_shader = LoadShader_("../shaders/vertex.vert", GL_VERTEX_SHADER); // relocate later
-    unsigned int fragment_shader = LoadShader_("../shaders/fragment.frag", GL_FRAGMENT_SHADER);
+    GLuint vertex_shader = LoadShader_("../shaders/vertex.vert", GL_VERTEX_SHADER); // relocate files later
+    GLuint fragment_shader = LoadShader_("../shaders/fragment.frag", GL_FRAGMENT_SHADER);
+    GLuint fragment_shader_1 = LoadShader_("../shaders/fragment1.frag", GL_FRAGMENT_SHADER);
 
     int success;
     char info_log[512];
@@ -125,6 +97,7 @@ void GraphicsManager::InitializeShaders_() {
         glGetProgramInfoLog(shader_program_, 512, NULL, info_log);
         std::cerr << "ERROR: Failed to link shader program\n" << info_log << std::endl;
     }
-    glDeleteShader(vertex_shader);
     glDeleteShader(fragment_shader);
+    glDeleteShader(vertex_shader);
 }
+

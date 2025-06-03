@@ -1,3 +1,4 @@
+#pragma once
 #include <GLFW/glfw3.h>
 #include <string>
 
@@ -13,9 +14,11 @@ public:
 private:
     void CreateWindow_();
     void InitializeShaders_();
-    unsigned int LoadShader_(const std::string& filepath, GLenum shader_type);
+    GLuint LoadShader_(const std::string& filepath, GLenum shader_type);
 
     GLFWwindow* window_;
 
-    unsigned int shader_program_, vao_, vbo_, ebo_;
+    GLuint shader_program_;
+    GLuint shader_program_1;
+    GLuint vaos_[2], vbos_[2], ebo_;
 };

@@ -15,9 +15,9 @@ find_package(OpenGL REQUIRED)
 include_directories(include)
 
 set(SOURCES
-    src/main.cpp
-    src/simulation.cpp
-    src/graphics_manager.cpp
+    src/main.cc
+    src/simulation.cc
+    src/graphics_manager.cc
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
