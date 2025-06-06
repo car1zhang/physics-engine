@@ -1,3 +1,3 @@
 # Carl's Physics Engine
 
-Build and run with CMake. Only dependency not included is GLFW.
+Build and run with CMake. Need to install OpenGL and GLFW locally before running. 
