@@ -1,5 +1,6 @@
 #pragma once
 
+
 namespace constants {
     constexpr int kWindowWidth = 800;
     constexpr int kWindowHeight = 600;

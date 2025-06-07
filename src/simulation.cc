@@ -1,10 +1,15 @@
 #define GLFW_INCLUDE_NONE
+
 #include <iostream>
 #include <chrono>
 #include <thread>
+
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+
 #include "simulation.h"
+#include "objects/cube.h"
+
 
 Simulation::Simulation() {
     std::cout << "Initializing simulation" << std::endl;
@@ -16,8 +21,36 @@ Simulation::Simulation() {
 
     graphics_manager_ = new GraphicsManager();
 
+    cubes_ = {
+        new Cube(
+            glm::vec3(0.0f, 0.0f, -2.0f),
+            glm::vec3(0.1f, 1.0f, 0.3f), 0.0f,
+            1.5f,
+            graphics_manager_->get_cube_renderer()
+        ),
+        new Cube(
+            glm::vec3(7.1f, 0.3f, -15.0f),
+            glm::vec3(-0.3f, 0.2f, -0.5f), 0.0f,
+            1.0f,
+            graphics_manager_->get_cube_renderer()
+        ),
+        new Cube(
+            glm::vec3(-1.5f, -2.2f, -2.5f),
+            glm::vec3(1.0f, 0.3f, -0.5f), 0.0f,
+            1.2f,
+            graphics_manager_->get_cube_renderer()
+        ),
+        new Cube(
+            glm::vec3(-3.8f, 3.0f, -10.3f),
+            glm::vec3(0.2f, -1.0f, 0.5f), 0.0f,
+            0.5f,
+            graphics_manager_->get_cube_renderer()
+        ),
+    };
+
     is_running_ = true;
 }
+
 
 Simulation::~Simulation() {
     std::cout << "Closing down shop" << std::endl;
@@ -26,6 +59,7 @@ Simulation::~Simulation() {
 
     is_running_ = false;
 }
+
 
 void Simulation::RunLoop() {
     using clock = std::chrono::high_resolution_clock;
@@ -47,6 +81,7 @@ void Simulation::RunLoop() {
     }
 }
 
+
 void Simulation::ProcessInput_() {
     glfwPollEvents();
     if (
@@ -57,8 +92,10 @@ void Simulation::ProcessInput_() {
     }
 }
 
+
 void Simulation::UpdateState_(double delta_time) {
 }
+
 
 void Simulation::RenderOutput_() {
     graphics_manager_->Draw();

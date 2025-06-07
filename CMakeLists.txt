@@ -17,8 +17,12 @@ include_directories(include)
 set(SOURCES
     src/main.cc
     src/simulation.cc
+
+    src/objects/cube.cc
+
     src/graphics/graphics_manager.cc
     src/graphics/shader.cc
+    src/graphics/renderers/cube_renderer.cc
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

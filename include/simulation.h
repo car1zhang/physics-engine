@@ -1,6 +1,9 @@
 #pragma once
+
 #include "graphics/graphics_manager.h"
+
 #include <GLFW/glfw3.h>
+
 
 class Simulation {
 public:
@@ -16,4 +19,6 @@ private:
     GraphicsManager* graphics_manager_;
 
     bool is_running_;
+
+    std::vector<Cube*> cubes_;
 };
