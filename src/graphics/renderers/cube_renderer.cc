@@ -40,9 +40,7 @@ void CubeRenderer::DrawCubes(Shader* shader) {
 
         model_matrix = glm::translate(model_matrix, cube->get_pos());
 
-        float time_value = glfwGetTime() * 10.0f; // spinning
-        float rot_deg = cube->get_rot_deg() + time_value;
-
+        float rot_deg = cube->get_rot_deg() + glfwGetTime() * 10.0f; // spinning
         model_matrix = glm::rotate(model_matrix, glm::radians(rot_deg), cube->get_rot_axis());
 
         model_matrix = glm::scale(model_matrix, glm::vec3(cube->get_scale(), cube->get_scale(), cube->get_scale()));

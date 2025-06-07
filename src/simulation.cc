@@ -46,6 +46,12 @@ Simulation::Simulation() {
             0.5f,
             graphics_manager_->get_cube_renderer()
         ),
+        new Cube(
+            glm::vec3(0.8f, 1.0f, -2.2f),
+            glm::vec3(-0.8, -0.9, 1.0), 0.0f,
+            0.8f,
+            graphics_manager_->get_cube_renderer()
+        ),
     };
 
     is_running_ = true;

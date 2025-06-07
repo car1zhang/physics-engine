@@ -25,7 +25,7 @@ GraphicsManager::GraphicsManager() {
     glm::mat4 projection_matrix = glm::mat4(1.0f);
     view_matrix = glm::translate(view_matrix, glm::vec3(0.0f, 0.0f, -3.0f));
     projection_matrix = glm::perspective(
-        glm::radians(45.0f),
+        glm::radians(60.0f),
         (float)constants::kWindowWidth / (float)constants::kWindowHeight,
         0.1f, 100.0f
     );
