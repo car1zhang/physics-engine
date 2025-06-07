@@ -53,9 +53,13 @@ Simulation::Simulation() {
 
 
 Simulation::~Simulation() {
-    std::cout << "Closing down shop" << std::endl;
+    std::cout << "Shutting down" << std::endl;
 
     delete graphics_manager_;
+
+    for (Cube* cube : cubes_) {
+        delete cube;
+    }
 
     is_running_ = false;
 }
