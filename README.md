@@ -1,7 +1,17 @@
 # Carl's Physics Engine
 
-Build and run with CMake. Need to install OpenGL and GLFW locally before running. 
+Need to install CMake and GLFW locally before running. 
 
 ```
-cd build && cmake .. && make && ./CarlPhysicsEngine
+brew install cmake glfw
+```
+
+Build and run with CMake. 
+
+```
+mkdir build
+cd build
+cmake ..
+make
+./CarlPhysicsEngine
 ```
