@@ -34,11 +34,15 @@ GraphicsManager::~GraphicsManager() {
 
 
 void GraphicsManager::Draw() {
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader_->SetMat4("view", camera_->get_view_matrix());
     shader_->SetMat4("projection", camera_->get_projection_matrix());
+
+    shader_->SetFloat("ambientStrength", 0.2f);
+    shader_->SetVector3("lightColor", 1.0f, 1.0f, 1.0f);
+    shader_->SetVector3("objectColor", 1.0f, 1.0f, 1.0f);
 
     box_renderer_->DrawBoxes(shader_);
 
