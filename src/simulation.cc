@@ -8,7 +8,7 @@
 #include <glad/glad.h>
 
 #include "simulation.h"
-#include "objects/cube.h"
+#include "constants.h"
 
 
 Simulation::Simulation() {
@@ -21,9 +21,14 @@ Simulation::Simulation() {
 
     graphics_manager_ = new GraphicsManager();
 
+    controller_ = new Controller(graphics_manager_->get_window());
+
+    camera_ = new Camera(glm::vec3(0.0f, 0.0f, 10.0f), -90.0f, 0.0f, 45.0f, 3.0f, 0.05f, controller_);
+    graphics_manager_->set_camera(camera_);
+
     cubes_ = {
         new Cube(
-            glm::vec3(0.0f, 0.0f, -2.0f),
+            glm::vec3(0.0f, 0.0f, 0.0f),
             glm::vec3(0.1f, 1.0f, 0.3f), 0.0f,
             1.5f,
             graphics_manager_->get_cube_renderer()
@@ -55,6 +60,8 @@ Simulation::Simulation() {
     };
 
     is_running_ = true;
+
+    prev_time_ = glfwGetTime();
 }
 
 
@@ -72,38 +79,30 @@ Simulation::~Simulation() {
 
 
 void Simulation::RunLoop() {
-    using clock = std::chrono::high_resolution_clock;
-    clock::time_point last_time = clock::now();
-
     while (is_running_) {
         ProcessInput_();
-
-        // calculate delta time
-        clock::time_point current_time = clock::now();
-        std::chrono::duration<double> delta_time = current_time - last_time;
-        last_time = current_time;
-        UpdateState_(delta_time.count());
-
+        UpdateState_();
         RenderOutput_();
-
-        // 30 fps
-        std::this_thread::sleep_for(std::chrono::milliseconds(33));
     }
 }
 
 
 void Simulation::ProcessInput_() {
-    glfwPollEvents();
-    if (
-        glfwGetKey(graphics_manager_->get_window(), GLFW_KEY_ESCAPE) == GLFW_PRESS || 
-        glfwWindowShouldClose(graphics_manager_->get_window())
-    ) {
+    controller_->UpdateInput();
+    if (glfwWindowShouldClose(graphics_manager_->get_window()) || controller_->get_key_pressed(GLFW_KEY_ESCAPE)) {
         is_running_ = false;
     }
 }
 
 
-void Simulation::UpdateState_(double delta_time) {
+void Simulation::UpdateState_() {
+    while (glfwGetTime() < prev_time_ + constants::kTargetFrameTime) {
+        std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+    }
+    float delta_time = glfwGetTime() - prev_time_;
+    prev_time_ = glfwGetTime();
+
+    camera_->Update(delta_time);
 }
 
 

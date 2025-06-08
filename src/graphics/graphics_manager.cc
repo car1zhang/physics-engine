@@ -6,7 +6,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 #include "graphics/renderers/cube_renderer.h"
 #include "graphics/graphics_manager.h"
@@ -20,19 +19,7 @@ GraphicsManager::GraphicsManager() {
     shader_->Use();
 
     glEnable(GL_DEPTH_TEST);
-
-    glm::mat4 view_matrix = glm::mat4(1.0f);
-    glm::mat4 projection_matrix = glm::mat4(1.0f);
-    view_matrix = glm::translate(view_matrix, glm::vec3(0.0f, 0.0f, -3.0f));
-    projection_matrix = glm::perspective(
-        glm::radians(60.0f),
-        (float)constants::kWindowWidth / (float)constants::kWindowHeight,
-        0.1f, 100.0f
-    );
-    // projection_matrix = glm::ortho(-8.0f, 8.0f, -6.0f, 6.0f, 0.1f, 100.0f);
-
-    shader_->SetMat4("view", view_matrix);
-    shader_->SetMat4("projection", projection_matrix);
+    glEnable(GL_MULTISAMPLE);
 
     cube_renderer_ = new CubeRenderer();
 }
@@ -50,6 +37,9 @@ void GraphicsManager::Draw() {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    shader_->SetMat4("view", camera_->get_view_matrix());
+    shader_->SetMat4("projection", camera_->get_projection_matrix());
+
     cube_renderer_->DrawCubes(shader_);
 
     glfwSwapBuffers(window_);
@@ -61,6 +51,7 @@ void GraphicsManager::CreateWindow_() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_SAMPLES, 8);
 
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
     window_ = glfwCreateWindow(constants::kWindowWidth, constants::kWindowHeight, constants::kProgramName, nullptr, nullptr);
@@ -70,6 +61,7 @@ void GraphicsManager::CreateWindow_() {
         exit(-1);
     }
     glfwMakeContextCurrent(window_);
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "ERROR: Failed to initialize GLAD" << std::endl;

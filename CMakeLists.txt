@@ -17,11 +17,13 @@ include_directories(include)
 set(SOURCES
     src/main.cc
     src/simulation.cc
+    src/controller.cc
 
     src/objects/cube.cc
 
     src/graphics/graphics_manager.cc
     src/graphics/shader.cc
+    src/graphics/camera.cc
     src/graphics/renderers/cube_renderer.cc
 )
 

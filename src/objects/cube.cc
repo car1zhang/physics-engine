@@ -3,14 +3,13 @@
 
 
 Cube::Cube(glm::vec3 pos, glm::vec3 rot_axis, float rot_deg, float scale, CubeRenderer* renderer) : 
-    pos(pos), 
-    rot_axis(rot_axis), 
-    rot_deg(rot_deg),
-    scale(scale)
+    pos_(pos), 
+    rot_axis_(rot_axis), 
+    rot_deg_(rot_deg),
+    scale_(scale)
 {
     renderer->emplace_cube(this);
 }
 
 
-Cube::~Cube() {
-}
+Cube::~Cube() {}
