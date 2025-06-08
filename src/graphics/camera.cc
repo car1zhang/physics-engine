@@ -76,16 +76,11 @@ void Camera::CalculateVectors_() {
 }
 
 void Camera::CalculateMatrices_() {
-    // glm::vec3 z_ = glm::normalize(pos_ - target_);
-    // glm::vec3 x_ = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), z_));
-    // glm::vec3 y_ = glm::cross(z_, x_);
     view_matrix_ = glm::lookAt(pos_, pos_ + front_, up_);
 
-    projection_matrix_ = glm::perspective(
+    projection_matrix_ = glm::perspective( // TODO: ortho camera?
         glm::radians(fov_),
         (float)constants::kWindowWidth / (float)constants::kWindowHeight,
         0.1f, 100.0f
     );
-    // TODO: ortho camera?
-    // projection_matrix_ = glm::ortho(-8.0f, 8.0f, -6.0f, 6.0f, 0.1f, 100.0f);
 }

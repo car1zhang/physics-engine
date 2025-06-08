@@ -23,40 +23,23 @@ Simulation::Simulation() {
 
     controller_ = new Controller(graphics_manager_->get_window());
 
-    camera_ = new Camera(glm::vec3(0.0f, 0.0f, 10.0f), -90.0f, 0.0f, 45.0f, 3.0f, 0.05f, controller_);
+    camera_ = new Camera(
+        glm::vec3(0.0f, 0.0f, 0.0f), // pos
+        0.0f, 0.0f, // rot
+        45.0f, // fov
+        3.0f, // speed
+        0.05f, // sens
+        controller_ // controller
+    );
     graphics_manager_->set_camera(camera_);
 
-    cubes_ = {
-        new Cube(
-            glm::vec3(0.0f, 0.0f, 0.0f),
-            glm::vec3(0.1f, 1.0f, 0.3f), 0.0f,
-            1.5f,
-            graphics_manager_->get_cube_renderer()
-        ),
-        new Cube(
-            glm::vec3(7.1f, 0.3f, -15.0f),
-            glm::vec3(-0.3f, 0.2f, -0.5f), 0.0f,
-            1.0f,
-            graphics_manager_->get_cube_renderer()
-        ),
-        new Cube(
-            glm::vec3(-1.5f, -2.2f, -2.5f),
-            glm::vec3(1.0f, 0.3f, -0.5f), 0.0f,
-            1.2f,
-            graphics_manager_->get_cube_renderer()
-        ),
-        new Cube(
-            glm::vec3(-3.8f, 3.0f, -10.3f),
-            glm::vec3(0.2f, -1.0f, 0.5f), 0.0f,
-            0.5f,
-            graphics_manager_->get_cube_renderer()
-        ),
-        new Cube(
-            glm::vec3(0.8f, 1.0f, -2.2f),
-            glm::vec3(-0.8, -0.9, 1.0), 0.0f,
-            0.8f,
-            graphics_manager_->get_cube_renderer()
-        ),
+    boxes_ = {
+        new Box(
+            glm::vec3(3.0f, 0.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f), 0.0f,
+            glm::vec3(1.0f, 2.0f, 1.0f),
+            graphics_manager_->get_box_renderer()
+        )
     };
 
     is_running_ = true;
@@ -70,8 +53,8 @@ Simulation::~Simulation() {
 
     delete graphics_manager_;
 
-    for (Cube* cube : cubes_) {
-        delete cube;
+    for (Box* box : boxes_) {
+        delete box;
     }
 
     is_running_ = false;

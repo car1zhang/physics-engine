@@ -1,13 +1,12 @@
+
+#include "graphics/renderers/box_renderer.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
-#include <graphics/renderers/cube_renderer.h>
-
-#include "objects/cube.h"
-#include "graphics/shader.h"
 
 
-CubeRenderer::CubeRenderer() {
+BoxRenderer::BoxRenderer() {
     glGenVertexArrays(1, &vao_);
     glGenBuffers(1, &vbo_);
     glGenBuffers(1, &ebo_);
@@ -25,25 +24,25 @@ CubeRenderer::CubeRenderer() {
 }
 
 
-CubeRenderer::~CubeRenderer() { // be sure to delete the cubes elsewhere
+BoxRenderer::~BoxRenderer() { // be sure to delete the boxes elsewhere
     glDeleteVertexArrays(1, &vao_);
     glDeleteBuffers(1, &vbo_);
     glDeleteBuffers(1, &ebo_);
 }
 
 
-void CubeRenderer::DrawCubes(Shader* shader) {
+void BoxRenderer::DrawBoxes(Shader* shader) {
     glBindVertexArray(vao_);
 
-    for (Cube* cube : cubes_) {
+    for (Box* box : boxes_) {
         glm::mat4 model_matrix = glm::mat4(1.0f);
 
-        model_matrix = glm::translate(model_matrix, cube->get_pos());
+        model_matrix = glm::translate(model_matrix, box->get_pos());
 
-        float rot_deg = cube->get_rot_deg() + glfwGetTime() * 10.0f; // spinning
-        model_matrix = glm::rotate(model_matrix, glm::radians(rot_deg), cube->get_rot_axis());
+        float rot_deg = box->get_rot_deg() + glfwGetTime() * 10.0f; // spinning
+        model_matrix = glm::rotate(model_matrix, glm::radians(rot_deg), box->get_rot_axis());
 
-        model_matrix = glm::scale(model_matrix, glm::vec3(cube->get_scale(), cube->get_scale(), cube->get_scale()));
+        model_matrix = glm::scale(model_matrix, box->get_scale());
 
         shader->SetMat4("model", model_matrix);
 

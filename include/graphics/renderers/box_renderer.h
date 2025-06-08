@@ -1,24 +1,24 @@
 #pragma once
 
-#include "objects/cube.h"
+#include "objects/box.h"
 #include "graphics/shader.h"
 
 #include <glad/glad.h>
 #include <vector>
 
 
-class CubeRenderer { // TODO: make an abstract parent when adding other objects
+class BoxRenderer { // TODO: make an abstract parent when adding other objects
 public:
-    CubeRenderer();
-    ~CubeRenderer();
+    BoxRenderer();
+    ~BoxRenderer();
 
-    void DrawCubes(Shader* shader);
+    void DrawBoxes(Shader* shader);
 
-    void emplace_cube(Cube* cube) { cubes_.emplace_back(cube); }
-    void remove_cube(Cube* cube) { cubes_.erase(std::find(cubes_.begin(), cubes_.end(), cube)); } // TODO: learn to use smart pointers
+    void emplace_box(Box* box) { boxes_.emplace_back(box); }
+    void remove_box(Box* box) { boxes_.erase(std::find(boxes_.begin(), boxes_.end(), box)); } // TODO: learn to use smart pointers
 
 private:
-    std::vector<Cube*> cubes_;
+    std::vector<Box*> boxes_;
 
     GLuint vao_, vbo_, ebo_;
 

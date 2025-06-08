@@ -25,5 +25,5 @@ private:
     bool is_running_;
     float prev_time_;
 
-    std::vector<Cube*> cubes_;
+    std::vector<Box*> boxes_;
 };

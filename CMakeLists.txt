@@ -19,12 +19,12 @@ set(SOURCES
     src/simulation.cc
     src/controller.cc
 
-    src/objects/cube.cc
+    src/objects/box.cc
 
     src/graphics/graphics_manager.cc
     src/graphics/shader.cc
     src/graphics/camera.cc
-    src/graphics/renderers/cube_renderer.cc
+    src/graphics/renderers/box_renderer.cc
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

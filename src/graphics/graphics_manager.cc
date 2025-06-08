@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "graphics/renderers/cube_renderer.h"
+#include "graphics/renderers/box_renderer.h"
 #include "graphics/graphics_manager.h"
 #include "graphics/shader.h"
 #include "constants.h"
@@ -21,7 +21,7 @@ GraphicsManager::GraphicsManager() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
 
-    cube_renderer_ = new CubeRenderer();
+    box_renderer_ = new BoxRenderer();
 }
 
 
@@ -40,7 +40,7 @@ void GraphicsManager::Draw() {
     shader_->SetMat4("view", camera_->get_view_matrix());
     shader_->SetMat4("projection", camera_->get_projection_matrix());
 
-    cube_renderer_->DrawCubes(shader_);
+    box_renderer_->DrawBoxes(shader_);
 
     glfwSwapBuffers(window_);
 }
@@ -71,4 +71,5 @@ void GraphicsManager::CreateWindow_() {
     int width, height;
     glfwGetFramebufferSize(window_, &width, &height);
     glViewport(0, 0, width, height);
+    glfwSwapInterval(1);
 }

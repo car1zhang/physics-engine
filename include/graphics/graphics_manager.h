@@ -2,7 +2,7 @@
 
 #include "graphics/shader.h"
 #include "graphics/camera.h"
-#include "graphics/renderers/cube_renderer.h"
+#include "graphics/renderers/box_renderer.h"
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
@@ -17,7 +17,7 @@ public:
 
     GLFWwindow* get_window() { return window_; }
 
-    CubeRenderer* get_cube_renderer() { return cube_renderer_; }
+    BoxRenderer* get_box_renderer() { return box_renderer_; }
 
     void set_camera(Camera* const camera) { camera_ = camera; }
 
@@ -32,5 +32,5 @@ private:
 
     Camera* camera_;
 
-    CubeRenderer* cube_renderer_; // TODO: have a vector of generic object renderers
+    BoxRenderer* box_renderer_; // TODO: have a vector of generic object renderers
 };
