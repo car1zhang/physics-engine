@@ -10,7 +10,7 @@ public:
     Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity, Controller* const controller);
     ~Camera();
 
-    void Update(float delta_time);
+    void Update(float delta_time, Controller* const controller);
 
     glm::vec3 get_pos() const { return pos_; }
     glm::vec3 get_front() const { return front_; }
@@ -18,7 +18,7 @@ public:
     glm::mat4 get_projection_matrix() const { return projection_matrix_; }
 
 private: // TODO: should be physics vectors too
-    void ProcessKeyboard_(float delta_time);
+    void ProcessKeyboard_(float delta_time, Controller* const controller);
     void ProcessMouse_(float delta_time);
     void CalculateVectors_();
     void CalculateMatrices_();

@@ -23,30 +23,30 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, fl
 Camera::~Camera() {}
 
 
-void Camera::Update(float dt) {
-    ProcessKeyboard_(dt);
+void Camera::Update(float dt, Controller* const controller) {
+    ProcessKeyboard_(dt, controller);
     ProcessMouse_(dt);
     CalculateVectors_();
     CalculateMatrices_();
 }
 
-void Camera::ProcessKeyboard_(float dt) {
-    if (controller_->get_key_pressed(GLFW_KEY_W)) {
+void Camera::ProcessKeyboard_(float dt, Controller* const controller) {
+    if (controller->get_key_pressed(GLFW_KEY_W)) {
         pos_ += front_ * speed_ * dt;
     }
-    if (controller_->get_key_pressed(GLFW_KEY_S)) {
+    if (controller->get_key_pressed(GLFW_KEY_S)) {
         pos_ -= front_ * speed_ * dt;
     }
-    if (controller_->get_key_pressed(GLFW_KEY_A)) {
+    if (controller->get_key_pressed(GLFW_KEY_A)) {
         pos_ -= right_ * speed_ * dt;
     }
-    if (controller_->get_key_pressed(GLFW_KEY_D)) {
+    if (controller->get_key_pressed(GLFW_KEY_D)) {
         pos_ += right_ * speed_ * dt;
     }
-    if (controller_->get_key_pressed(GLFW_KEY_SPACE)) {
+    if (controller->get_key_pressed(GLFW_KEY_SPACE)) {
         pos_ += up_ * speed_ * dt;
     }
-    if (controller_->get_key_pressed(GLFW_KEY_LEFT_CONTROL)) {
+    if (controller->get_key_pressed(GLFW_KEY_LEFT_CONTROL)) {
         pos_ -= up_ * speed_ * dt;
     }
 }

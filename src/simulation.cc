@@ -98,7 +98,7 @@ void Simulation::UpdateState_() {
     prev_time_ = glfwGetTime();
 
     if (!is_paused_) {
-        camera_->Update(dt);
+        camera_->Update(dt, controller_);
         for (Box* box : boxes_) {
             box->Update(dt);
         }
