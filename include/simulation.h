@@ -23,6 +23,7 @@ private:
     Camera* camera_;
 
     bool is_running_;
+    bool is_paused_;
     float prev_time_;
 
     std::vector<Box*> boxes_;

@@ -39,8 +39,7 @@ void BoxRenderer::DrawBoxes(Shader* shader) {
 
         model_matrix = glm::translate(model_matrix, box->get_pos());
 
-        float rot_deg = box->get_rot_deg() + glfwGetTime() * 10.0f; // spinning
-        model_matrix = glm::rotate(model_matrix, glm::radians(rot_deg), box->get_rot_axis());
+        model_matrix = glm::rotate(model_matrix, glm::radians(box->get_rot_deg()), box->get_rot_axis());
 
         model_matrix = glm::scale(model_matrix, box->get_scale());
 

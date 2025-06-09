@@ -23,35 +23,35 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, fl
 Camera::~Camera() {}
 
 
-void Camera::Update(float delta_time) {
-    ProcessKeyboard_(delta_time);
-    ProcessMouse_(delta_time);
+void Camera::Update(float dt) {
+    ProcessKeyboard_(dt);
+    ProcessMouse_(dt);
     CalculateVectors_();
     CalculateMatrices_();
 }
 
-void Camera::ProcessKeyboard_(float delta_time) {
+void Camera::ProcessKeyboard_(float dt) {
     if (controller_->get_key_pressed(GLFW_KEY_W)) {
-        pos_ += front_ * speed_ * delta_time;
+        pos_ += front_ * speed_ * dt;
     }
     if (controller_->get_key_pressed(GLFW_KEY_S)) {
-        pos_ -= front_ * speed_ * delta_time;
+        pos_ -= front_ * speed_ * dt;
     }
     if (controller_->get_key_pressed(GLFW_KEY_A)) {
-        pos_ -= right_ * speed_ * delta_time;
+        pos_ -= right_ * speed_ * dt;
     }
     if (controller_->get_key_pressed(GLFW_KEY_D)) {
-        pos_ += right_ * speed_ * delta_time;
+        pos_ += right_ * speed_ * dt;
     }
     if (controller_->get_key_pressed(GLFW_KEY_SPACE)) {
-        pos_ += up_ * speed_ * delta_time;
+        pos_ += up_ * speed_ * dt;
     }
     if (controller_->get_key_pressed(GLFW_KEY_LEFT_CONTROL)) {
-        pos_ -= up_ * speed_ * delta_time;
+        pos_ -= up_ * speed_ * dt;
     }
 }
 
-void Camera::ProcessMouse_(float delta_time) { // TODO: zoom ?
+void Camera::ProcessMouse_(float dt) { // TODO: zoom ?
     float x_offset = controller_->get_x_cursor_offset() * mouse_sensitivity_;
     float y_offset = controller_->get_y_cursor_offset() * mouse_sensitivity_;
 

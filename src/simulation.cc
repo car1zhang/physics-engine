@@ -43,6 +43,7 @@ Simulation::Simulation() {
     };
 
     is_running_ = true;
+    is_paused_ = false;
 
     prev_time_ = glfwGetTime();
 }
@@ -72,8 +73,19 @@ void Simulation::RunLoop() {
 
 void Simulation::ProcessInput_() {
     controller_->UpdateInput();
-    if (glfwWindowShouldClose(graphics_manager_->get_window()) || controller_->get_key_pressed(GLFW_KEY_ESCAPE)) {
+    
+    if (glfwWindowShouldClose(graphics_manager_->get_window())) {
         is_running_ = false;
+    }
+    
+    if (controller_->get_key_just_pressed(GLFW_KEY_ESCAPE)) {
+        is_paused_ = !is_paused_;
+        
+        if (is_paused_) {
+            glfwSetInputMode(graphics_manager_->get_window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else {
+            glfwSetInputMode(graphics_manager_->get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
     }
 }
 
@@ -82,10 +94,15 @@ void Simulation::UpdateState_() {
     while (glfwGetTime() < prev_time_ + constants::kTargetFrameTime) {
         std::this_thread::sleep_for(std::chrono::nanoseconds(1));
     }
-    float delta_time = glfwGetTime() - prev_time_;
+    float dt = glfwGetTime() - prev_time_;
     prev_time_ = glfwGetTime();
 
-    camera_->Update(delta_time);
+    if (!is_paused_) {
+        camera_->Update(dt);
+        for (Box* box : boxes_) {
+            box->Update(dt);
+        }
+    }
 }
 
 

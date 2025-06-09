@@ -14,6 +14,7 @@ Controller::Controller(GLFWwindow* const window) :
     is_first_frame_(true)
 {
     memset(keyboard_state_, 0, GLFW_KEY_LAST);
+    memset(prev_keyboard_state_, 0, GLFW_KEY_LAST);
 }
 
 
@@ -22,7 +23,9 @@ Controller::~Controller() {}
 
 void Controller::UpdateInput() {
     glfwPollEvents();
+    
     for (int i = 0; i < GLFW_KEY_LAST; i++) {
+        prev_keyboard_state_[i] = keyboard_state_[i];
         keyboard_state_[i] = glfwGetKey(window_, i) == GLFW_PRESS;
     }
 

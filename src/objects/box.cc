@@ -13,3 +13,8 @@ Box::Box(glm::vec3 pos, glm::vec3 rot_axis, float rot_deg, glm::vec3 scale, BoxR
 
 
 Box::~Box() {}
+
+
+void Box::Update(float dt) {
+    rot_deg_ += dt * 10.0f;
+}
