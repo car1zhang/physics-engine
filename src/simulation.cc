@@ -18,29 +18,28 @@ Simulation::Simulation() {
         std::cerr << "ERROR: Failed to initialize GLFW" << std::endl;
         exit(-1);
     }
+    CreateWindow_();
 
-    graphics_manager_ = new GraphicsManager();
+    graphics_manager_ = std::make_unique<GraphicsManager>();
+    std::cout << "Graphics manager initialized" << std::endl;
 
-    controller_ = new Controller(graphics_manager_->get_window());
+    body_manager_ = BodyManager();
+    std::cout << "Body manager initialized" << std::endl;
 
-    camera_ = new Camera(
+    controller_ = Controller();
+    std::cout << "Controller initialized" << std::endl;
+
+    camera_ = Camera(
         glm::vec3(0.0f, 0.0f, 0.0f), // pos
         0.0f, 0.0f, // rot
         45.0f, // fov
         3.0f, // speed
-        0.05f, // sens
-        controller_ // controller
+        0.05f // sens
     );
-    graphics_manager_->set_camera(camera_);
+    std::cout << "Camera initialized" << std::endl;
 
-    boxes_ = {
-        new Box(
-            glm::vec3(3.0f, 0.0f, 0.0f),
-            glm::vec3(0.0f, 1.0f, 0.0f), 0.0f,
-            glm::vec3(1.0f, 2.0f, 1.0f),
-            graphics_manager_->get_box_renderer()
-        )
-    };
+    body_manager_.CreateBody(BodyType::BOX, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.0f, 2.0f, 1.0f), graphics_manager_.get());
+    std::cout << "Body created" << std::endl;
 
     is_running_ = true;
     is_paused_ = false;
@@ -51,14 +50,9 @@ Simulation::Simulation() {
 
 Simulation::~Simulation() {
     std::cout << "Shutting down" << std::endl;
-
-    delete graphics_manager_;
-
-    for (Box* box : boxes_) {
-        delete box;
-    }
-
     is_running_ = false;
+    glfwDestroyWindow(window_);
+    glfwTerminate();
 }
 
 
@@ -71,20 +65,49 @@ void Simulation::RunLoop() {
 }
 
 
+void Simulation::CreateWindow_() {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_SAMPLES, 8);
+
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    window_ = glfwCreateWindow(constants::kWindowWidth, constants::kWindowHeight, constants::kProgramName, nullptr, nullptr);
+    if (!window_) {
+        std::cerr << "ERROR: Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        exit(-1);
+    }
+    glfwMakeContextCurrent(window_);
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "ERROR: Failed to initialize GLAD" << std::endl;
+        glfwTerminate();
+        exit(-1);
+    }
+    int width, height;
+    glfwGetFramebufferSize(window_, &width, &height);
+    glViewport(0, 0, width, height);
+    glfwSwapInterval(1);
+}
+
+
 void Simulation::ProcessInput_() {
-    controller_->UpdateInput();
+    controller_.UpdateInput(window_);
     
-    if (glfwWindowShouldClose(graphics_manager_->get_window())) {
+    if (glfwWindowShouldClose(window_)) {
         is_running_ = false;
     }
     
-    if (controller_->get_key_just_pressed(GLFW_KEY_ESCAPE)) {
+    if (controller_.get_key_just_pressed(GLFW_KEY_ESCAPE)) {
         is_paused_ = !is_paused_;
         
         if (is_paused_) {
-            glfwSetInputMode(graphics_manager_->get_window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         } else {
-            glfwSetInputMode(graphics_manager_->get_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
     }
 }
@@ -97,15 +120,14 @@ void Simulation::UpdateState_() {
     float dt = glfwGetTime() - prev_time_;
     prev_time_ = glfwGetTime();
 
-    if (!is_paused_) {
-        camera_->Update(dt, controller_);
-        for (Box* box : boxes_) {
-            box->Update(dt);
-        }
+    if (is_paused_) {
+        return;
     }
+    camera_.Update(dt, &controller_);
+    body_manager_.UpdateBodies(dt);
 }
 
 
 void Simulation::RenderOutput_() {
-    graphics_manager_->Draw();
+    graphics_manager_->Draw(&camera_, window_);
 }

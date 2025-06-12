@@ -1,10 +1,11 @@
 #pragma once
 
 #include "graphics/graphics_manager.h"
-#include "graphics/camera.h"
+#include "camera.h"
 #include "controller.h"
 
 #include <GLFW/glfw3.h>
+#include <memory>
 
 
 class Simulation {
@@ -14,17 +15,19 @@ public:
     void RunLoop();
 
 private:
+    void CreateWindow_();
+    GLFWwindow* window_;
+
     void ProcessInput_();
     void UpdateState_();
     void RenderOutput_();
 
-    Controller* controller_;
-    GraphicsManager* graphics_manager_;
-    Camera* camera_;
+    std::unique_ptr<GraphicsManager> graphics_manager_;
+    BodyManager body_manager_;
+    Camera camera_;
+    Controller controller_;
 
     bool is_running_;
     bool is_paused_;
     float prev_time_;
-
-    std::vector<Box*> boxes_;
 };

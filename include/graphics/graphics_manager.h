@@ -1,8 +1,11 @@
 #pragma once
 
+#include <map>
+
+#include "graphics/renderer.h"
 #include "graphics/shader.h"
-#include "graphics/camera.h"
-#include "graphics/renderers/box_renderer.h"
+#include "camera.h"
+#include "bodies/body_manager.h"
 
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
@@ -13,24 +16,15 @@ public:
     GraphicsManager();
     ~GraphicsManager();
 
-    void Draw();
+    void Draw(Camera* camera, GLFWwindow* window);
 
-    GLFWwindow* get_window() { return window_; }
-
-    BoxRenderer* get_box_renderer() { return box_renderer_; }
-
-    void set_camera(Camera* const camera) { camera_ = camera; }
+    Renderer* get_renderer(BodyType type) { return renderers_[type]; }
 
 private:
-    void CreateWindow_();
     void InitializeShaders_();
     GLuint LoadShader_(const std::string& filepath, GLenum shader_type);
 
-    GLFWwindow* window_;
+    Shader shader_;
 
-    Shader* shader_;
-
-    Camera* camera_;
-
-    BoxRenderer* box_renderer_; // TODO: have a vector of generic object renderers
+    std::map<BodyType, Renderer*> renderers_;
 };

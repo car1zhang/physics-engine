@@ -18,13 +18,14 @@ set(SOURCES
     src/main.cc
     src/simulation.cc
     src/controller.cc
+    src/camera.cc
 
-    src/objects/box.cc
+    src/bodies/body_manager.cc
+    src/bodies/body.cc
 
     src/graphics/graphics_manager.cc
     src/graphics/shader.cc
-    src/graphics/camera.cc
-    src/graphics/renderers/box_renderer.cc
+    src/graphics/renderer.cc
 )
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

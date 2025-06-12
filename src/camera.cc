@@ -1,4 +1,4 @@
-#include "graphics/camera.h"
+#include "camera.h"
 #include "constants.h"
 
 #include <glm/glm.hpp>
@@ -6,15 +6,14 @@
 #include <GLFW/glfw3.h>
 
 
-Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity, Controller* const controller) : 
+Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity) : 
     world_up_(glm::vec3(0.0f, 1.0f, 0.0f)),
     pos_(pos),
     yaw_(yaw),
     pitch_(pitch),
     fov_(fov),
     speed_(speed),
-    mouse_sensitivity_(mouse_sensitivity),
-    controller_(controller)
+    mouse_sensitivity_(mouse_sensitivity)
 {
     CalculateVectors_();
 }
@@ -25,10 +24,11 @@ Camera::~Camera() {}
 
 void Camera::Update(float dt, Controller* const controller) {
     ProcessKeyboard_(dt, controller);
-    ProcessMouse_(dt);
+    ProcessMouse_(dt, controller);
     CalculateVectors_();
     CalculateMatrices_();
 }
+
 
 void Camera::ProcessKeyboard_(float dt, Controller* const controller) {
     if (controller->get_key_pressed(GLFW_KEY_W)) {
@@ -51,9 +51,10 @@ void Camera::ProcessKeyboard_(float dt, Controller* const controller) {
     }
 }
 
-void Camera::ProcessMouse_(float dt) { // TODO: zoom ?
-    float x_offset = controller_->get_x_cursor_offset() * mouse_sensitivity_;
-    float y_offset = controller_->get_y_cursor_offset() * mouse_sensitivity_;
+
+void Camera::ProcessMouse_(float dt, Controller* const controller) { // TODO: zoom ?
+    float x_offset = controller->get_x_cursor_offset() * mouse_sensitivity_;
+    float y_offset = controller->get_y_cursor_offset() * mouse_sensitivity_;
 
     yaw_ += x_offset;
     pitch_ += y_offset;
@@ -66,6 +67,7 @@ void Camera::ProcessMouse_(float dt) { // TODO: zoom ?
     }
 }
 
+
 void Camera::CalculateVectors_() {
     front_.x = cos(glm::radians(yaw_)) * cos(glm::radians(pitch_));
     front_.y = sin(glm::radians(pitch_));
@@ -74,6 +76,7 @@ void Camera::CalculateVectors_() {
     right_ = glm::normalize(glm::cross(front_, world_up_));
     up_ = glm::normalize(glm::cross(right_, front_));
 }
+
 
 void Camera::CalculateMatrices_() {
     view_matrix_ = glm::lookAt(pos_, pos_ + front_, up_);
