@@ -6,52 +6,11 @@
 #include "graphics/renderer.h"
 
 
-Renderer::Renderer(const std::string& mesh_path) : mesh_path_(mesh_path) { // TODO: get mesh from mesh path
-    std::ifstream mesh_file;
-    mesh_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    try {
-        mesh_file.open(mesh_path);
-        if (!mesh_file.is_open()) {
-            std::cerr << "ERROR: Failed to open mesh file: " << mesh_path << std::endl;
-        }
-
-        int vertex_count;
-        mesh_file >> vertex_count;
-        vertices_ = new float[vertex_count * 3];
-        for (int i = 0; i < vertex_count; i++) {
-            mesh_file >> vertices_[i * 3];
-            mesh_file >> vertices_[i * 3 + 1];
-            mesh_file >> vertices_[i * 3 + 2];
-        }
-
-        int triangle_count;
-        mesh_file >> triangle_count;
-        indices_ = new uint[triangle_count * 3];
-        for (int i = 0; i < triangle_count; i++) {
-            mesh_file >> indices_[i * 3];
-            mesh_file >> indices_[i * 3 + 1];
-            mesh_file >> indices_[i * 3 + 2];
-        }
-        glGenVertexArrays(1, &vao_);
-        glGenBuffers(1, &vbo_);
-        glGenBuffers(1, &ebo_);
-
-        glBindVertexArray(vao_);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-        glBufferData(GL_ARRAY_BUFFER, vertex_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangle_count * 3 * sizeof(uint), indices_, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-    } catch (std::ifstream::failure& e) {
-        std::cerr << "ERROR: Failed to read mesh file: " << mesh_path << std::endl;
-    }
+Renderer::Renderer(const std::string& mesh_path) : mesh_path_(mesh_path) {
+    ReadMesh_(mesh_path);
+    CalculateNormals_();
+    CreateBuffers_();
 }
-
 
 
 Renderer::~Renderer() { // be sure to delete the boxes elsewhere
@@ -84,14 +43,40 @@ void Renderer::DrawBodies(Shader* shader) {
 }
 
 
-float* Renderer::CalculateNormals_(float* vertices_, uint* indices_) {
-    static float normals[24];
+void Renderer::ReadMesh_(const std::string& mesh_path) {
+    std::ifstream mesh_file;
+    mesh_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try {
+        mesh_file.open(mesh_path);
+        if (!mesh_file.is_open()) {
+            std::cerr << "ERROR: Failed to open mesh file: " << mesh_path << std::endl;
+        }
 
-    for (int i = 0; i < 24; i++) {
-        normals[i] = 0.0f;
+        mesh_file >> vertex_count_;
+        vertices_ = new float[vertex_count_ * 3];
+        for (int i = 0; i < vertex_count_ * 3; i += 3) {
+            mesh_file >> vertices_[i];
+            mesh_file >> vertices_[i + 1];
+            mesh_file >> vertices_[i + 2];
+        }
+
+        mesh_file >> triangle_count_;
+        indices_ = new uint[triangle_count_ * 3];
+        for (int i = 0; i < triangle_count_ * 3; i += 3) {
+            mesh_file >> indices_[i];
+            mesh_file >> indices_[i + 1];
+            mesh_file >> indices_[i + 2];
+        }
+    } catch (std::ifstream::failure& e) {
+        std::cerr << "ERROR: Failed to read mesh file: " << mesh_path << std::endl;
     }
+}
 
-    for (int i = 0; i < 36; i += 3) {
+
+void Renderer::CalculateNormals_() {
+    normals_ = new float[vertex_count_ * 3];
+
+    for (int i = 0; i < triangle_count_ * 3; i += 3) {
         uint v0 = indices_[i];
         uint v1 = indices_[i + 1];
         uint v2 = indices_[i + 2];
@@ -102,28 +87,49 @@ float* Renderer::CalculateNormals_(float* vertices_, uint* indices_) {
 
         glm::vec3 edge1 = p1 - p0;
         glm::vec3 edge2 = p2 - p0;
-        glm::vec3 face_normal = glm::normalize(glm::cross(edge1, edge2));
+        glm::vec3 face_normal = glm::normalize(glm::cross(edge2, edge1));
 
-        normals[v0 * 3] += face_normal.x;
-        normals[v0 * 3 + 1] += face_normal.y;
-        normals[v0 * 3 + 2] += face_normal.z;
+        normals_[v0 * 3] += face_normal.x;
+        normals_[v0 * 3 + 1] += face_normal.y;
+        normals_[v0 * 3 + 2] += face_normal.z;
 
-        normals[v1 * 3] += face_normal.x;
-        normals[v1 * 3 + 1] += face_normal.y;
-        normals[v1 * 3 + 2] += face_normal.z;
+        normals_[v1 * 3] += face_normal.x;
+        normals_[v1 * 3 + 1] += face_normal.y;
+        normals_[v1 * 3 + 2] += face_normal.z;
 
-        normals[v2 * 3] += face_normal.x;
-        normals[v2 * 3 + 1] += face_normal.y;
-        normals[v2 * 3 + 2] += face_normal.z;
+        normals_[v2 * 3] += face_normal.x;
+        normals_[v2 * 3 + 1] += face_normal.y;
+        normals_[v2 * 3 + 2] += face_normal.z;
     }
 
-    for (int i = 0; i < 8; i++) {
-        glm::vec3 normal(normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2]);
+    for (int i = 0; i < vertex_count_ * 3; i += 3) {
+        glm::vec3 normal(normals_[i], normals_[i + 1], normals_[i + 2]);
         normal = glm::normalize(normal);
-        normals[i * 3] = normal.x;
-        normals[i * 3 + 1] = normal.y;
-        normals[i * 3 + 2] = normal.z;
+        normals_[i] = normal.x;
+        normals_[i + 1] = normal.y;
+        normals_[i + 2] = normal.z;
     }
+}
 
-    return normals; // TODO: don't return, just make a vbo and bind to vao
+
+void Renderer::CreateBuffers_() {
+    glGenVertexArrays(1, &vao_);
+    glGenBuffers(1, &vbo_);
+    glGenBuffers(1, &nvbo_);
+    glGenBuffers(1, &ebo_);
+
+    glBindVertexArray(vao_);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBufferData(GL_ARRAY_BUFFER, vertex_count_ * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, nvbo_);
+    glBufferData(GL_ARRAY_BUFFER, vertex_count_ * 3 * sizeof(float), normals_, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangle_count_ * 3 * sizeof(uint), indices_, GL_STATIC_DRAW);
 }

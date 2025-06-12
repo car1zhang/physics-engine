@@ -16,21 +16,15 @@ Simulation::Simulation() {
     }
     CreateWindow_();
 
-    graphics_manager_ = std::make_unique<GraphicsManager>();
+    graphics_manager_ = std::make_unique<GraphicsManager>(); // smart pointer since must wait for glfw to init
 
     body_manager_ = BodyManager();
 
+    camera_ = Camera();
+
     controller_ = Controller();
 
-    camera_ = Camera(
-        glm::vec3(0.0f, 0.0f, 0.0f), // pos
-        0.0f, 0.0f, // rot
-        45.0f, // fov
-        3.0f, // speed
-        0.05f // sens
-    );
-
-    body_manager_.CreateBody(BodyType::BOX, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.0f, 2.0f, 1.0f), graphics_manager_.get());
+    body_manager_.CreateBody(BodyType::BOX, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f), graphics_manager_.get()); // hardcoded - move to file?
 
     is_running_ = true;
     is_paused_ = false;

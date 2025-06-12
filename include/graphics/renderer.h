@@ -17,12 +17,17 @@ public:
     void remove_body(Body* body) { bodies_.erase(std::find(bodies_.begin(), bodies_.end(), body)); }
 
 private:
-    float* CalculateNormals_(float* vertices, uint* indices);
+    void ReadMesh_(const std::string& mesh_path);
+    void CalculateNormals_();
+    void CreateBuffers_();
 
     std::vector<Body*> bodies_;
 
     const std::string mesh_path_;
+    unsigned int vertex_count_;
     float* vertices_;
+    float* normals_;
+    unsigned int triangle_count_;
     uint* indices_;
     GLuint vao_, vbo_, nvbo_, ebo_;
 };
