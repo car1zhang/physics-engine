@@ -29,9 +29,10 @@ void GraphicsManager::Draw(Camera* camera, GLFWwindow* window) {
     shader_.SetMat4("projection", camera->get_projection_matrix());
 
     shader_.SetFloat("ambientStrength", 0.2f);
+    shader_.SetFloat("specularStrength", 0.8f);
 
-    shader_.SetVector3("lightColor", 1.0f, 1.0f, 1.0f);
-    shader_.SetVector3("lightPos", 30.0f, 0.0f, 0.0f); // TODO: make this an object or smth
+    shader_.SetVector3("lightColor", 0.8f, 0.8f, 0.8f);
+    shader_.SetVector3("lightPos", -30.0f, 20.0f, -10.0f); // TODO: make this an object or smth
 
     shader_.SetVector3("objectColor", 1.0f, 0.5f, 0.3f);
 

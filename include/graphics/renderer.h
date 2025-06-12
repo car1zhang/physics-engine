@@ -24,10 +24,11 @@ private:
     std::vector<Body*> bodies_;
 
     const std::string mesh_path_;
-    unsigned int vertex_count_;
+    // unsigned int vertex_count_;
     float* vertices_;
-    float* normals_;
+    // float* normals_;
     unsigned int triangle_count_;
-    uint* indices_;
-    GLuint vao_, vbo_, nvbo_, ebo_;
+    // uint* indices_;
+    // GLuint vao_, vbo_, nvbo_, ebo_;
+    GLuint vao_, vbo_;
 };
