@@ -2,8 +2,6 @@
 #include <sstream>
 #include <iostream>
 
-#include <glm/glm.hpp>
-
 #include "graphics/shader.h"
 
 

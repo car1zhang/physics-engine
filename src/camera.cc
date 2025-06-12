@@ -1,9 +1,7 @@
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "camera.h"
 #include "constants.h"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <GLFW/glfw3.h>
 
 
 Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity) : 

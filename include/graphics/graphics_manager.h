@@ -3,12 +3,7 @@
 #include <map>
 
 #include "graphics/renderer.h"
-#include "graphics/shader.h"
 #include "camera.h"
-#include "bodies/body_manager.h"
-
-#include <glm/glm.hpp>
-#include <GLFW/glfw3.h>
 
 
 class GraphicsManager {

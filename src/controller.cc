@@ -1,8 +1,8 @@
 #include <string.h>
 
-#include "controller.h"
-
 #include <GLFW/glfw3.h>
+
+#include "controller.h"
 
 
 Controller::Controller() : 

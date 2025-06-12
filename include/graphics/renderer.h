@@ -3,9 +3,6 @@
 #include "bodies/body.h"
 #include "graphics/shader.h"
 
-#include <glad/glad.h>
-#include <vector>
-
 
 class Renderer {
 public:
@@ -20,14 +17,12 @@ public:
     void remove_body(Body* body) { bodies_.erase(std::find(bodies_.begin(), bodies_.end(), body)); }
 
 private:
-    const std::string mesh_path_;
+    float* CalculateNormals_(float* vertices, uint* indices);
 
     std::vector<Body*> bodies_;
 
-    float* CalculateNormals_(float* vertices, uint* indices);
-
-    GLuint vao_, vbo_, nvbo_, ebo_;
-
+    const std::string mesh_path_;
     float* vertices_;
     uint* indices_;
+    GLuint vao_, vbo_, nvbo_, ebo_;
 };

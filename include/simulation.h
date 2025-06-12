@@ -1,11 +1,8 @@
 #pragma once
 
 #include "graphics/graphics_manager.h"
-#include "camera.h"
-#include "controller.h"
 
 #include <GLFW/glfw3.h>
-#include <memory>
 
 
 class Simulation {

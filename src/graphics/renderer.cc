@@ -1,11 +1,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "graphics/renderer.h"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include "graphics/renderer.h"
 
 
 Renderer::Renderer(const std::string& mesh_path) : mesh_path_(mesh_path) { // TODO: get mesh from mesh path

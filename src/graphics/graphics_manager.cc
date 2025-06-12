@@ -1,13 +1,4 @@
-#define GLFW_INCLUDE_NONE
-
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "graphics/renderer.h"
 #include "graphics/graphics_manager.h"
-#include "graphics/shader.h"
 #include "constants.h"
 
 
@@ -19,7 +10,7 @@ GraphicsManager::GraphicsManager() :
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
 
-    renderers_[BodyType::BOX] = new Renderer("../meshes/box.txt"); // TODO: somehow unhardcode this?
+    renderers_[BodyType::BOX] = new Renderer(constants::kBoxMeshPath);
 }
 
 
