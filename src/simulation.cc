@@ -21,13 +21,10 @@ Simulation::Simulation() {
     CreateWindow_();
 
     graphics_manager_ = std::make_unique<GraphicsManager>();
-    std::cout << "Graphics manager initialized" << std::endl;
 
     body_manager_ = BodyManager();
-    std::cout << "Body manager initialized" << std::endl;
 
     controller_ = Controller();
-    std::cout << "Controller initialized" << std::endl;
 
     camera_ = Camera(
         glm::vec3(0.0f, 0.0f, 0.0f), // pos
@@ -36,10 +33,8 @@ Simulation::Simulation() {
         3.0f, // speed
         0.05f // sens
     );
-    std::cout << "Camera initialized" << std::endl;
 
     body_manager_.CreateBody(BodyType::BOX, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.0f, 2.0f, 1.0f), graphics_manager_.get());
-    std::cout << "Body created" << std::endl;
 
     is_running_ = true;
     is_paused_ = false;

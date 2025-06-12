@@ -36,10 +36,10 @@ void GraphicsManager::Draw(Camera* camera, GLFWwindow* window) {
 
     shader_.SetMat4("view", camera->get_view_matrix());
     shader_.SetMat4("projection", camera->get_projection_matrix());
-    shader_.SetVector3("objectColor", 1.0f, 1.0f, 1.0f);
 
     shader_.SetFloat("ambientStrength", 0.2f);
     shader_.SetVector3("lightColor", 1.0f, 1.0f, 1.0f);
+    shader_.SetVector3("objectColor", 1.0f, 1.0f, 1.0f);
 
     for (auto const& [type, renderer] : renderers_) {
         renderer->DrawBodies(&shader_);

@@ -34,25 +34,26 @@ Renderer::Renderer(const std::string& mesh_path) : mesh_path_(mesh_path) { // TO
             mesh_file >> indices_[i * 3 + 1];
             mesh_file >> indices_[i * 3 + 2];
         }
+        glGenVertexArrays(1, &vao_);
+        glGenBuffers(1, &vbo_);
+        glGenBuffers(1, &ebo_);
+
+        glBindVertexArray(vao_);
+
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+        glBufferData(GL_ARRAY_BUFFER, vertex_count * 3 * sizeof(float), vertices_, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangle_count * 3 * sizeof(uint), indices_, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
     } catch (std::ifstream::failure& e) {
         std::cerr << "ERROR: Failed to read mesh file: " << mesh_path << std::endl;
     }
-
-    glGenVertexArrays(1, &vao_);
-    glGenBuffers(1, &vbo_);
-    glGenBuffers(1, &ebo_);
-
-    glBindVertexArray(vao_);
-
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_), vertices_, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_), indices_, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 }
+
 
 
 Renderer::~Renderer() { // be sure to delete the boxes elsewhere
@@ -67,7 +68,6 @@ Renderer::~Renderer() { // be sure to delete the boxes elsewhere
 void Renderer::DrawBodies(Shader* shader) {
     glBindVertexArray(vao_);
 
-    std::cout << bodies_.size() << " bodies to draw" << std::endl; // TODO: remove
     for (Body* body : bodies_) {
         glm::mat4 model_matrix = glm::mat4(1.0f);
 
