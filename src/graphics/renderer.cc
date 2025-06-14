@@ -28,13 +28,11 @@ void Renderer::DrawBodies(Shader* shader) {
     for (Body* body : bodies_) {
         glm::mat4 model_matrix = glm::mat4(1.0f);
 
-        // TODO: translate vector data types to glm::vec3
+        model_matrix = glm::translate(model_matrix, body->get_pos().to_glm());
 
-        model_matrix = glm::translate(model_matrix, body->get_pos());
+        model_matrix = glm::rotate(model_matrix, glm::radians(body->get_rot_deg()), body->get_rot_axis().to_glm());
 
-        model_matrix = glm::rotate(model_matrix, glm::radians(body->get_rot_deg()), body->get_rot_axis());
-
-        model_matrix = glm::scale(model_matrix, body->get_scale());
+        model_matrix = glm::scale(model_matrix, body->get_scale().to_glm());
 
         shader->SetMat4("model", model_matrix);
 

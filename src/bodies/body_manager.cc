@@ -13,7 +13,7 @@ BodyManager::~BodyManager() {
 }
 
 
-void BodyManager::CreateBody(BodyType type, glm::vec3 pos, glm::vec3 rot_axis, float rot_deg, glm::vec3 scale, GraphicsManager* graphics_manager) {
+void BodyManager::CreateBody(BodyType type, Physics::Vec3 pos, Physics::Vec3 rot_axis, float rot_deg, Physics::Vec3 scale, GraphicsManager* graphics_manager) {
     Body* body = new Body(type, pos, rot_axis, rot_deg, scale);
     bodies_.emplace_back(body);
 

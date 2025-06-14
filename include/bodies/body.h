@@ -2,30 +2,51 @@
 
 #include <glm/glm.hpp>
 
+#include "physics/components/component.h"
 #include "bodies/body_manager.h"
+#include "physics/types.h"
 
 
 class Body {
 public:
-    Body() = default;
-    Body(BodyType type, glm::vec3 pos, glm::vec3 rot_axis, float rot_deg, glm::vec3 scale);
+    // Body() = default;
+    Body(BodyType type, Physics::Vec3 pos, Physics::Vec3 rot_axis, float rot_deg, Physics::Vec3 scale);
     ~Body();
 
     void Update(float dt);
+    void ApplyForce(Physics::Vec3 force);
 
     unsigned int get_id() const { return id_; }
     BodyType get_type() const { return type_; }
-    glm::vec3 get_pos() const { return pos_; }
-    glm::vec3 get_rot_axis() const { return rot_axis_; }
-    float get_rot_deg() const { return rot_deg_; }
-    glm::vec3 get_scale() const { return scale_; }
 
-private: // TODO: convert to be physics types
+    Physics::Vec3 get_pos() const { return pos_; }
+    void set_pos(const Physics::Vec3 pos) { pos_ = pos; }
+    Physics::Vec3 get_vel() const { return vel_; }
+    void set_vel(const Physics::Vec3 vel) { vel_ = vel; }
+    Physics::Vec3 get_accel() const { return accel_; }
+    void set_accel(const Physics::Vec3 accel) { accel_ = accel; }
+
+    Physics::Vec3 get_rot_axis() const { return rot_axis_; }
+    float get_rot_deg() const { return rot_deg_; }
+    void set_rot(const Physics::Vec3 axis, const float deg)  {
+        rot_axis_ = axis;
+        rot_deg_ = deg;
+    }
+
+    Physics::Vec3 get_scale() const { return scale_; }
+    void set_scale(const Physics::Vec3 scale) { scale_ = scale; }
+
+private: 
     unsigned int id_;
     BodyType type_;
 
-    glm::vec3 pos_;
-    glm::vec3 rot_axis_;
+    Physics::Vec3 pos_;
+    Physics::Vec3 vel_;
+    Physics::Vec3 accel_;
+
+    Physics::Vec3 rot_axis_;
     float rot_deg_;
-    glm::vec3 scale_;
+    Physics::Vec3 scale_;
+
+    std::vector<Component*> components_;
 };

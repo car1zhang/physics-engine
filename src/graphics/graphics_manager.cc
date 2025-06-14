@@ -18,6 +18,7 @@ GraphicsManager::~GraphicsManager() {
     for (auto const& [type, renderer] : renderers_) {
         delete renderer;
     }
+    renderers_.clear();
 }
 
 

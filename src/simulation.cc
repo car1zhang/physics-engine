@@ -24,7 +24,7 @@ Simulation::Simulation() {
 
     controller_ = Controller();
 
-    body_manager_.CreateBody(BodyType::BOX, glm::vec3(3.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f), graphics_manager_.get()); // hardcoded - move to file?
+    body_manager_.CreateBody(BodyType::BOX, Physics::Vec3(3.0f, 0.0f, 0.0f), Physics::Vec3(0.0f, 1.0f, 0.0f), 0.0f, Physics::Vec3(1.0f, 1.0f, 1.0f), graphics_manager_.get()); // hardcoded - move to file?
 
     is_running_ = true;
     is_paused_ = false;

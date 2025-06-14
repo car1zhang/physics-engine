@@ -1,7 +1,7 @@
 #include "bodies/body.h"
 
 
-Body::Body(BodyType type, glm::vec3 pos, glm::vec3 rot_axis, float rot_deg, glm::vec3 scale) : 
+Body::Body(BodyType type, Physics::Vec3 pos, Physics::Vec3 rot_axis, float rot_deg, Physics::Vec3 scale) : 
     type_(type),
     pos_(pos), 
     rot_axis_(rot_axis), 
@@ -14,5 +14,9 @@ Body::~Body() {}
 
 
 void Body::Update(float dt) {
-    rot_deg_ += dt * 10.0f;
+    for (auto component : components_) {
+        component->Update(dt);
+    }
+    vel_ = vel_ + accel_ * dt;
+    pos_ = pos_ + vel_ * dt;
 }
