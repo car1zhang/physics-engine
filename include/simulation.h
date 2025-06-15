@@ -1,6 +1,9 @@
 #pragma once
 
 #include "graphics/graphics_manager.h"
+#include "bodies/body_manager.h"
+#include "camera.h"
+#include "controller.h"
 
 #include <GLFW/glfw3.h>
 

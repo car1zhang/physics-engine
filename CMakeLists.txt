@@ -23,6 +23,8 @@ set(SOURCES
     src/bodies/body_manager.cc
     src/bodies/body.cc
 
+    src/physics/components/gravity_component.cc
+
     src/graphics/graphics_manager.cc
     src/graphics/shader.cc
     src/graphics/renderer.cc

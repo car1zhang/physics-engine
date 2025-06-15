@@ -82,6 +82,6 @@ void Camera::CalculateMatrices_() {
     projection_matrix_ = glm::perspective( // TODO: ortho camera?
         glm::radians(fov_),
         (float)constants::kWindowWidth / (float)constants::kWindowHeight,
-        0.1f, 100.0f
+        0.1f, 500.0f
     );
 }

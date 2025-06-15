@@ -13,4 +13,6 @@ namespace constants {
     constexpr const char* kFragmentShaderPath = "../shaders/fragment.glsl";
 
     constexpr const char* kBoxMeshPath = "../meshes/box.txt";
+
+    constexpr float kGravity = 9.81f;
 }

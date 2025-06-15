@@ -2,10 +2,11 @@
 
 #include <glm/glm.hpp>
 
-#include "physics/components/component.h"
 #include "bodies/body_manager.h"
 #include "physics/types.h"
 
+
+class Component;
 
 class Body {
 public:
@@ -15,6 +16,9 @@ public:
 
     void Update(float dt);
     void ApplyForce(Physics::Vec3 force);
+
+    void AddComponent(Component* component);
+    void RemoveComponent(Component* component);
 
     unsigned int get_id() const { return id_; }
     BodyType get_type() const { return type_; }
@@ -36,6 +40,9 @@ public:
     Physics::Vec3 get_scale() const { return scale_; }
     void set_scale(const Physics::Vec3 scale) { scale_ = scale; }
 
+    float get_mass() const { return mass_; }
+    void set_mass(const float mass) { mass_ = mass; }
+
 private: 
     unsigned int id_;
     BodyType type_;
@@ -46,7 +53,10 @@ private:
 
     Physics::Vec3 rot_axis_;
     float rot_deg_;
+
     Physics::Vec3 scale_;
+
+    float mass_; // TODO: density?
 
     std::vector<Component*> components_;
 };

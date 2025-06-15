@@ -6,10 +6,12 @@
 
 class GravityComponent : public Component {
 public:
-    GravityComponent(Body* body);
-    ~GravityComponent();
+    GravityComponent() = default;
+    ~GravityComponent() = default;
 
-    void Update(float dt);
+    void Update(float dt) override;
+
+    void set_body(Body* body) override { body_ = body; }
 
 private:
     Body* body_;
