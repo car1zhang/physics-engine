@@ -109,6 +109,8 @@ void Simulation::UpdateState_() {
     float dt = glfwGetTime() - prev_time_;
     prev_time_ = glfwGetTime();
 
+    std::cout << "fps: " << 1.0f / dt << std::endl;
+
     if (is_paused_) {
         return;
     }
