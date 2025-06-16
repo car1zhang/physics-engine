@@ -7,7 +7,7 @@
 
 class Camera {
 public:
-    Camera() = default;
+    Camera();
     Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity);
     ~Camera();
 
@@ -24,19 +24,19 @@ private: // TODO: should be physics vectors too
     void CalculateVectors_();
     void CalculateMatrices_();
 
-    glm::vec3 world_up_ = glm::vec3(0.0f, 1.0f, 0.0f);
+    glm::vec3 world_up_;
 
-    glm::vec3 pos_ = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 pos_;
 
-    glm::vec3 front_ = glm::vec3(1.0f, 0.0f, 0.0f);
-    glm::vec3 up_ = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 right_ = glm::vec3(0.0f, 0.0f, 1.0f);
-    float yaw_ = 0.0f;
-    float pitch_ = 0.0f;
+    glm::vec3 front_;
+    glm::vec3 up_;
+    glm::vec3 right_;
+    float yaw_;
+    float pitch_;
 
-    float fov_ = 45.0f;
-    float speed_ = 3.0f;
-    float mouse_sensitivity_ = 0.05f;
+    float fov_;
+    float speed_;
+    float mouse_sensitivity_;
 
     glm::mat4 view_matrix_;
     glm::mat4 projection_matrix_;

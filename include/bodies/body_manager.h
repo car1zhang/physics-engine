@@ -26,6 +26,8 @@ public:
 
     void UpdateBodies(float dt);
 
+    std::vector<Body*> get_bodies() { return bodies_; }
+
 private:
     std::vector<Body*> bodies_;
 };

@@ -4,10 +4,10 @@
 #include "bodies/body.h"
 
 
-class GravityComponent : public Component {
+class CollisionComponent : public Component {
 public:
-    GravityComponent(BodyManager* body_manager);
-    ~GravityComponent() = default;
+    CollisionComponent() = default;
+    ~CollisionComponent();
 
     void Update(float dt) override;
 
@@ -15,6 +15,4 @@ public:
 
 private:
     Body* body_;
-
-    BodyManager* body_manager_;
 };
