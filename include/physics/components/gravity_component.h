@@ -6,7 +6,7 @@
 
 class GravityComponent : public Component {
 public:
-    GravityComponent(BodyManager* body_manager);
+    GravityComponent() = default;
     ~GravityComponent() = default;
 
     void Update(float dt) override;
@@ -15,6 +15,4 @@ public:
 
 private:
     Body* body_;
-
-    BodyManager* body_manager_;
 };

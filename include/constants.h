@@ -5,7 +5,7 @@ namespace constants {
     constexpr int kWindowWidth = 1280;
     constexpr int kWindowHeight = 720;
 
-    constexpr double kTargetFrameTime = 1.0 / 100.0;
+    constexpr double kTargetFrameTime = 1.0 / 60.0;
 
     constexpr const char* kProgramName = "Carl's Physics Engine";
 
@@ -14,5 +14,5 @@ namespace constants {
 
     constexpr const char* kBoxMeshPath = "../meshes/box.txt";
 
-    constexpr float kGravitationalConstant = 6.67408e-8f;
+    constexpr float kGravity = 9.81f;
 }

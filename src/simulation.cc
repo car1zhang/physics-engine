@@ -25,17 +25,10 @@ Simulation::Simulation() {
 
     controller_ = Controller();
 
-    Body* cube = body_manager_.CreateBody(BodyType::BOX, Physics::Vec3(10.0f, 0.0f, 0.0f), Physics::Vec3(0.0f, 1.0f, 0.0f), 0.0f, Physics::Vec3(1.0f, 1.0f, 1.0f), graphics_manager_.get()); // hardcoded - move to file?
-    Body* cube2 = body_manager_.CreateBody(BodyType::BOX, Physics::Vec3(10.0f, 1.4f, 0.0f), Physics::Vec3(0.0f, 1.0f, 0.0f), 0.0f, Physics::Vec3(0.5f, 0.5f, 0.5f), graphics_manager_.get()); // hardcoded - move to file?
-    cube->set_mass(1.9891e6f);
-    cube2->set_vel(Physics::Vec3(0.0f, 0.0f, 1.0f));
-    cube2->set_mass(5.972f);
+    Body* cube = body_manager_.CreateBody(BodyType::BOX, Physics::Vec3(3.0f, 0.0f, 0.0f), Physics::Vec3(0.0f, 1.0f, 0.0f), 0.0f, Physics::Vec3(1.0f, 1.0f, 1.0f), graphics_manager_.get()); // hardcoded - move to file?
 
-    GravityComponent* gravity_component = new GravityComponent(&body_manager_); // be able to add component to body directly by type instead
+    GravityComponent* gravity_component = new GravityComponent();
     cube->AddComponent(gravity_component);
-
-    GravityComponent* gravity_component2 = new GravityComponent(&body_manager_); // be able to add component to body directly by type instead
-    cube2->AddComponent(gravity_component2);
 
     is_running_ = true;
     is_paused_ = false;

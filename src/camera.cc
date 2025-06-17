@@ -3,18 +3,6 @@
 #include "camera.h"
 #include "constants.h"
 
-Camera::Camera() : 
-    world_up_(glm::vec3(0.0f, 1.0f, 0.0f)),
-    pos_(glm::vec3(0.0f, 0.0f, 0.0f)),
-    yaw_(0.0f),
-    pitch_(0.0f),
-    fov_(45.0f),
-    speed_(3.0f),
-    mouse_sensitivity_(0.05f)
-{
-    CalculateVectors_();
-}
-
 
 Camera::Camera(glm::vec3 pos, float yaw, float pitch, float fov, float speed, float mouse_sensitivity) : 
     world_up_(glm::vec3(0.0f, 1.0f, 0.0f)),
